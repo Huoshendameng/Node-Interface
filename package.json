@@ -1,0 +1,26 @@
+{
+  "name": "learn",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "mongodb": "^3.1.1",
+    "morgan": "~1.9.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "crawler": "^1.2.0",
+    "jquery": "^3.3.1",
+    "jsdom": "^12.0.0",
+    "phantom": "^6.0.3"
+  }
+}
