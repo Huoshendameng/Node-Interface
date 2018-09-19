@@ -19,10 +19,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//首页
 app.use('/', indexRouter);
+//获取优惠券列表数据
 app.use('/couponUserRef/coupons/list', couponList);
+//获取小程序码
 app.use('/getCode',getCode);
+//获取今日头条列表数据
 app.use('/listData',listData);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
