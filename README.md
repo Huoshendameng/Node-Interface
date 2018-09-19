@@ -1,13 +1,11 @@
 # Node-Interface
 ## Project Description
 
-* 瞎做了几个接口
-* 练习 mongoDB
-* 练习 编写爬虫
-* 练习 接口编写及跨域处理
-* 练习 express框架
+* 写了个爬虫，爬取头条数据
+* 为了熟悉MongoDB，用node写了个接口
+* 写了获取小程序码的接口
 
-## Build Setup
+## Project build
 ```bash
-npm install
+   npm install
 ```

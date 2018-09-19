@@ -18,13 +18,13 @@ router.get('/',async function(req, response, next) {
 		body:data
 	},function (error,result) {
 		result.body.indexOf('errcode') > -1 ? response.end(JSON.stringify({msg:JSON.parse(result.body).errmsg})) : steam.on('finish',function () {
-			let content = fs.readFileSync('./test.png','binary')
+			let content = fs.readFileSync('./code.png','binary')
 			let base64 = Buffer.from(content, 'binary').toString('base64');
 			console.log(this.body)
 			response.end(JSON.stringify({data:base64}))
 		})
 		console.log('result: '+JSON.stringify(result))
-	}).pipe(steam = fs.createWriteStream('./test.png'))
+	}).pipe(steam = fs.createWriteStream('./code.png'))
 });
 
 module.exports = router;
