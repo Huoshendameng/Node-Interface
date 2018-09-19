@@ -3,7 +3,7 @@ const cheerio = require('cheerio')
 const puppeteer = require('puppeteer')
 let getListData = async function(Category) {
 	const browser = await puppeteer.launch({
-		executablePath: 'D:\\chrome-win\\chrome.exe',
+		executablePath: 'D:\\chrome-win\\chrome.exe',//把项目中的这个chrome-win文件夹放到D盘根目录
 		headless: false
 	})
 	const page = await browser.newPage()
