@@ -66,6 +66,7 @@ let getListData = async function(Category) {
 				href:$($(item).find('.title')).attr('href')
 			}):''
 	})
+	//顺手存入本地文件
 	fs.writeFileSync('tt.JSON',JSON.stringify(data))
 	fs.writeFileSync('tt.html',content)
 	/* 关闭 puppeteer*/
