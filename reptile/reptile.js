@@ -1,12 +1,12 @@
-const fs = require('fs');
-var jsdom = require('jsdom');
-const $ = require('jquery')
-const phantom = require('phantom');
+const fs = require('fs')
+const cheerio = require('cheerio')
+const puppeteer = require('puppeteer')
 let getListData = async function(Category) {
-	const instance = await phantom.create();
-	const page = await instance.createPage();
-	await page.on('onResourceRequested', function(requestData) {
-	});
+	const browser = await puppeteer.launch({
+		executablePath: 'D:\\chrome-win\\chrome.exe',
+		headless: false
+	})
+	const page = await browser.newPage()
 	let url = ''
 	switch (Category) {
 		case '0':
@@ -22,54 +22,40 @@ let getListData = async function(Category) {
 			url = 'https://www.toutiao.com/ch/news_finance/'
 			break;
 	}
-	await page.open(url);
-	const content = await page.property('content');
-  const window = (new jsdom.JSDOM(content)).window
-	
-	const $ = require('jquery')(window)
-	const li =	$($('.feedBox').find('ul')[0]).find('li')
+	await page.goto(url)
+	var content , $
+	async function scrollPage(i) {
+		content = await page.content();
+		$ = cheerio.load(content);
+		await page.evaluate(function () {
+			for(var y = 0; y <= 1000*i;y += 100){
+				window.scrollTo(0,y)
+			}
+		})
+		const li =	$($('.feedBox').find('ul')[0]).find('li')
+		return li
+	}
+	let i = 0
+	let li = await scrollPage(++i)
+	while (li.length < 30) {
+		li = await scrollPage(++i)
+	}
 	let data = {
   	list: []
 	}
-	for  (var item of li) {
+	console.log(li.length)
+	li.map(function (index,item) {
 		$(item).find('img').attr('src') != undefined ?
-		data.list.push({
-			src: $(item).find('img').attr('src'),
-			title: $($(item).find('.title')).text(),
-			source:$($(item).find('.source')).text(),
-			href:$($(item).find('.title')).attr('href')
-		}):''
-	}
+			data.list.push({
+				src: $(item).find('img').attr('src'),
+				title: $($(item).find('.title')).text(),
+				source:$($(item).find('.source')).text(),
+				href:$($(item).find('.title')).attr('href')
+			}):''
+	})
 	fs.writeFileSync('tt.JSON',JSON.stringify(data))
-	await instance.exit();
+	fs.writeFileSync('tt.html',content)
+	await browser.close()
   return data
-};
+}
 module.exports = getListData
-// ~(async function() {
-// 	const instance = await phantom.create();
-// 	const page = await instance.createPage();
-// 	await page.on('onResourceRequested', function(requestData) {
-// 	});
-// 	await page.open('https://www.toutiao.com/ch/news_game/');
-// 	const content = await page.property('content');
-// 	const window = (new jsdom.JSDOM(content)).window
-//
-// 	const $ = require('jquery')(window)
-// 	const li =	$($('.feedBox').find('ul')[0]).find('li')
-// 	let data = {
-// 		list: []
-// 	}
-// 	for  (var item of li) {
-// 		$(item).find('img').attr('src') != undefined ?
-// 			data.list.push({
-// 				src: $(item).find('img').attr('src'),
-// 				title: $($(item).find('.title')).text(),
-// 				source:$($(item).find('.source')).text()
-// 			}):''
-// 	}
-// 	fs.writeFile('tt.txt',JSON.stringify(data),function (err,res) {
-// 		console.log(res)
-// 		console.log(err)
-// 	})
-// 	await instance.exit();
-// })()
